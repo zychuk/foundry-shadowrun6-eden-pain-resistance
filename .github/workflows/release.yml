@@ -1,0 +1,34 @@
+name: Release module
+
+# Runs when you publish a release on GitHub (e.g. tag v1.1.0).
+# Sets module.json's version and a version-pinned download link from the tag,
+# builds module.zip, and attaches both files to the release.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set version and download link from the release tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          DOWNLOAD="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/module.zip"
+          jq --arg v "$VERSION" --arg d "$DOWNLOAD" '.version = $v | .download = $d' module.json > module.tmp
+          mv module.tmp module.json
+
+      - name: Build module.zip
+        run: zip -r module.zip module.json lang scripts README.md LICENSE
+
+      - name: Attach files to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            module.json
+            module.zip
