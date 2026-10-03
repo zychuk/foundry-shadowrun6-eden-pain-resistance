@@ -1,0 +1,22 @@
+{
+  "id": "sr6-pain-resistance",
+  "title": "SR6 Eden: Pain Resistance",
+  "description": "Adds a Pain Resistance level (system.painResistance) for the Shadowrun 6 Eden system. Each level moves the wound modifiers of the Physical and Stun Condition Monitors one box further down; negative values move them up (penalties trigger earlier). Works as a standalone module, without modifying the system.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "authors": [
+    { "name": "Pain Resistance module" }
+  ],
+  "relationships": {
+    "systems": [
+      { "id": "shadowrun6-eden", "type": "system" }
+    ]
+  },
+  "esmodules": ["scripts/pain-resistance.js"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ]
+}
