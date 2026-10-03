@@ -16,3 +16,4 @@ https://github.com/zychuk/foundry-shadowrun6-eden-pain-resistance/releases/lates
 
 - Enable the module in **Manage Modules**.
 - Give the power (or a quality) an Active Effect with key `system.painResistance`, mode **Add**, and the level as the value.
+- Negative values (e.g. `-1`) move the penalties earlier: at -1, the -1 penalty starts at 2 filled boxes.

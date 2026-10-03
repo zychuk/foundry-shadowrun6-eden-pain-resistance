@@ -41,9 +41,10 @@ function patchActor() {
         console.warn(`${LOG} _getWoundModifierPerMonitor not found, wound modifiers are not shifted.`);
         return;
     }
-    // Safety: a manually patched system already handles Pain Resistance, don't shift twice
+    // If the system ever supports Pain Resistance natively (or is patched manually), step aside
+    // instead of shifting the penalties twice
     if (original.toString().includes("painResistance")) {
-        console.warn(`${LOG} The system already handles painResistance, skipping the wound modifier patch.`);
+        console.warn(`${LOG} The system already handles painResistance, the module's wound modifier patch is not needed.`);
         return;
     }
 
@@ -73,20 +74,8 @@ function patchActor() {
     console.log(`${LOG} Wound modifier patch active.`);
 }
 
-Hooks.once("setup", () => {
-    if (game.system.id !== SYSTEM_ID) return;
-    patchActor();
-
-    // Registered here (after the system's init) so it runs after the system rebuilds CONFIG.SR6 on ready
-    Hooks.once("ready", () => {
-        const options = CONFIG.SR6?.ACTIVE_EFFECT_OPTIONS;
-        if (options) options.system_painResistance = game.i18n.localize("SR6PAINRES.EffectOption");
-    });
-});
-
 /** Move the -1/-2/-3 labels on the existing Physical and Stun monitor boxes (no boxes are added) */
-Hooks.on("renderActorSheet", (app, html) => {
-    if (game.system.id !== SYSTEM_ID) return;
+function relabelMonitors(app, html) {
     const shift = getShift(app.actor);
     if (!shift) return;
 
@@ -100,4 +89,16 @@ Hooks.on("renderActorSheet", (app, html) => {
             textNode.textContent = boxLabel(index + 1, boxes.length, shift) ?? "\u00A0";
         });
     }
+}
+
+Hooks.once("setup", () => {
+    if (game.system.id !== SYSTEM_ID) return;
+    patchActor();
+    Hooks.on("renderActorSheet", relabelMonitors);
+
+    // Registered here (after the system's init) so it runs after the system rebuilds CONFIG.SR6 on ready
+    Hooks.once("ready", () => {
+        const options = CONFIG.SR6?.ACTIVE_EFFECT_OPTIONS;
+        if (options) options.system_painResistance = game.i18n.localize("SR6PAINRES.EffectOption");
+    });
 });

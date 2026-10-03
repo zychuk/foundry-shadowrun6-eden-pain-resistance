@@ -6,6 +6,9 @@
   "url": "https://github.com/zychuk/foundry-shadowrun6-eden-pain-resistance",
   "manifest": "https://github.com/zychuk/foundry-shadowrun6-eden-pain-resistance/releases/latest/download/module.json",
   "download": "https://github.com/zychuk/foundry-shadowrun6-eden-pain-resistance/releases/latest/download/module.zip",
+  "readme": "https://github.com/zychuk/foundry-shadowrun6-eden-pain-resistance#readme",
+  "bugs": "https://github.com/zychuk/foundry-shadowrun6-eden-pain-resistance/issues",
+  "license": "https://github.com/zychuk/foundry-shadowrun6-eden-pain-resistance/blob/main/LICENSE",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -19,7 +22,10 @@
     "systems": [
       {
         "id": "shadowrun6-eden",
-        "type": "system"
+        "type": "system",
+        "compatibility": {
+          "minimum": "3.3.9"
+        }
       }
     ]
   },
